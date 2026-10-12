@@ -10,7 +10,7 @@
  */
 
 const DEFAULT_BASE_URL = 'https://api.transcriptout.com';
-const USER_AGENT = 'transcriptout-js/0.1.0';
+const USER_AGENT = 'transcriptout-js/0.1.1';
 /** One batch job takes at most this many videos; longer lists run as several jobs. */
 const BATCH_MAX = 4000;
 
