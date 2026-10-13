@@ -16,10 +16,34 @@ const items = await YoutubeTranscript.fetchTranscript('dQw4w9WgXcQ', { lang: 'en
 
 ```bash
 npm install transcriptout
-export TRANSCRIPTOUT_API_KEY=sk_...
 ```
 
-Get a free key at [transcriptout.com](https://transcriptout.com). New accounts start with free credits, no card. Node 18 or newer, or any runtime with `fetch`.
+Node 18 or newer, or any runtime with `fetch`.
+
+## API key
+
+Sign in at [transcriptout.com](https://transcriptout.com) and create a key on the [Keys](https://transcriptout.com/keys) page. It starts with `sk_`. New accounts start with free credits, no card.
+
+The package reads the key from the `TRANSCRIPTOUT_API_KEY` environment variable, so your code stays the same as with youtube-transcript. Set it in the terminal you run your code from.
+
+```bash
+# macOS and Linux
+export TRANSCRIPTOUT_API_KEY=sk_your_key
+
+# Windows PowerShell
+$env:TRANSCRIPTOUT_API_KEY="sk_your_key"
+```
+
+That lasts until the terminal is closed. For a project, put the line `TRANSCRIPTOUT_API_KEY=sk_your_key` in a `.env` file and run `node --env-file=.env app.js` (Node 20.6 or newer) or load it with `dotenv`. On a server, add the variable in your host's settings (Vercel, Render, Fly, Docker and so on).
+
+Or pass the key in code.
+
+```js
+const items = await YoutubeTranscript.fetchTranscript('dQw4w9WgXcQ', { lang: 'en', apiKey: 'sk_your_key' });
+const client = new TranscriptOut({ apiKey: 'sk_your_key' });
+```
+
+Keep the key out of git. An error saying `No API key` means the variable is not set in the process that runs your code.
 
 ## What stays the same
 
