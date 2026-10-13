@@ -63,6 +63,63 @@ const client = new TranscriptOut();   // reads TRANSCRIPTOUT_API_KEY
 const { transcripts, errors } = await client.fetchMany(videoIds, { lang: 'en' });
 ```
 
+## Reference
+
+Everything the package exports, in one place.
+
+### Functions and classes
+
+| Call | Returns | What it does | Cost |
+| --- | --- | --- | --- |
+| `YoutubeTranscript.fetchTranscript(videoId, config?)` | `TranscriptResponse[]` | One video's transcript, the youtube-transcript entry point | 1 credit. Without `lang`, a video with no English track takes extra calls to list the tracks and fetch the first |
+| `fetchTranscript(videoId, config?)` | `TranscriptResponse[]` | The same as a standalone function | as above |
+| `new TranscriptOut(config?)` | client | Holds the key and options for repeated calls | free |
+| `client.fetchTranscript(videoId, lang?)` | `TranscriptResponse[]` | One video's transcript | as above |
+| `client.fetchMany(videoIds, options?)` | `FetchManyResult` | Many videos through one batch job, up to 4,000 per job. Longer lists run as several jobs | 1 credit per video |
+
+A video id or a full YouTube URL works everywhere a `videoId` is asked for.
+
+### `config`
+
+| Option | Default | What it does |
+| --- | --- | --- |
+| `lang` | English, then the first track | Language code, for example `'de'`. Only for `fetchTranscript` |
+| `apiKey` | `TRANSCRIPTOUT_API_KEY` | Your `sk_` key |
+| `units` | `'ms'` | `'ms'` or `'s'` for `offset` and `duration` |
+| `maxRetries` | `3` | Retries on 429 and 503, honouring `Retry-After`. Those are not charged |
+| `fetch` | `globalThis.fetch` | Your own `fetch`, for older runtimes or tests |
+
+### `fetchMany` options
+
+| Option | Default | What it does |
+| --- | --- | --- |
+| `lang` | `'en'` | One language for the whole job |
+| `kind` | manual, else auto | `'manual'` or `'auto'` |
+| `pollIntervalMs` | `3000` | How often the job status is checked |
+| `onProgress` | none | Called with the job status after every check |
+
+### What comes back
+
+| Type | Fields |
+| --- | --- |
+| `TranscriptResponse` | `text`, `offset`, `duration`, `lang` |
+| `FetchManyResult` | `transcripts` (id to `TranscriptResponse[]`), `errors` (id to error), `jobIds` |
+
+### Errors
+
+The youtube-transcript error classes keep their names, all subclasses of `YoutubeTranscriptError`.
+
+| Error | When |
+| --- | --- |
+| `YoutubeTranscriptDisabledError` | The video has no subtitles at all |
+| `YoutubeTranscriptNotAvailableError` | No track for this request |
+| `YoutubeTranscriptNotAvailableLanguageError` | No track in the language asked for |
+| `YoutubeTranscriptVideoUnavailableError` | The video is gone or age restricted |
+| `YoutubeTranscriptTooManyRequestError` | Too many requests per minute, still refused after retries |
+| `TranscriptOutAuthError` | No key, or the key was rejected |
+| `TranscriptOutInsufficientCreditsError` | The account has no credits left |
+| `TranscriptOutError` | Any other refusal. Carries `status`, `code` and `requestId` |
+
 ## What differs
 
 - Auto-generated tracks come grouped into readable segments of up to 180 characters rather than YouTube's short caption lines.
