@@ -1,6 +1,6 @@
 # transcriptout
 
-`youtube-transcript` works locally and breaks on servers, because YouTube blocks cloud IP ranges. `transcriptout` keeps the same interface and fetches through [TranscriptOut](https://transcriptout.com), so there are no proxies to run and nothing to block on your side.
+`youtube-transcript` works locally and breaks on servers, because YouTube blocks cloud IP ranges. `transcriptout` keeps the same interface and fetches through [TranscriptOut](https://transcriptout.com/?utm_source=transcriptout-js&utm_medium=readme), so there are no proxies to run and nothing to block on your side.
 
 Migration is one line.
 
@@ -22,7 +22,7 @@ Node 18 or newer, or any runtime with `fetch`.
 
 ## API key
 
-Sign in at [transcriptout.com](https://transcriptout.com) and create a key on the [Keys](https://transcriptout.com/keys) page. It starts with `sk_`. New accounts start with free credits, no card.
+Sign in at [transcriptout.com](https://transcriptout.com/?utm_source=transcriptout-js&utm_medium=readme) and create a key on the [Keys](https://transcriptout.com/keys?utm_source=transcriptout-js&utm_medium=readme) page. It starts with `sk_`. New accounts start with free credits, no card.
 
 The package reads the key from the `TRANSCRIPTOUT_API_KEY` environment variable, so your code stays the same as with youtube-transcript. Set it in the terminal you run your code from.
 
@@ -127,7 +127,7 @@ The youtube-transcript error classes keep their names, all subclasses of `Youtub
 
 ## Pricing
 
-One credit per transcript. Requests refused for reasons on our side are refunded. See [pricing](https://transcriptout.com/#pricing).
+One credit per transcript. Requests refused for reasons on our side are refunded. See [pricing](https://transcriptout.com/?utm_source=transcriptout-js&utm_medium=readme#pricing).
 
 ## License
 
